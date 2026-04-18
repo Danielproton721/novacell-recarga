@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>NovaCell Recarga - Recarregue e ganhe bônus</title>
+    <meta name="description" content="Recarregue seu celular NovaCell e ganhe bônus exclusivos de internet. Valores a partir de R$15.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header-inner">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 32 32" width="28" height="28">
+                    <circle cx="16" cy="16" r="14" fill="#E63312" />
+                    <path d="M10 16 Q16 8 22 16 Q16 24 10 16Z" fill="#fff" opacity="0.9"/>
+                    <circle cx="16" cy="16" r="3" fill="#fff"/>
+                </svg>
+                <span class="logo-text">Nova<span class="logo-accent">Cell</span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="hero" id="hero">
+        <div class="hero-banner">
+            <div class="hero-content">
+                <p class="hero-eyebrow">Nos canais digitais da NovaCell,</p>
+                <h2 class="hero-title">sua recarga vale mais!</h2>
+                <p class="hero-subtitle">Recarregou? <strong>Ganhou!</strong></p>
+                <div class="hero-badge">
+                    <span class="hero-badge-label">de internet na 1ª recarga</span>
+                    <div class="hero-badge-value">
+                        <span class="hero-badge-prefix">Até</span>
+                        <span class="hero-badge-number">10</span>
+                        <span class="hero-badge-unit">GB</span>
+                    </div>
+                    <span class="hero-badge-sub">de internet em cada recarga</span>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="images/hero-model.png" alt="Modelo comemorando recarga NovaCell" loading="eager" width="300" height="360">
+            </div>
+            <div class="hero-logo-corner">
+                <svg viewBox="0 0 32 32" width="20" height="20">
+                    <circle cx="16" cy="16" r="14" fill="#fff" />
+                    <path d="M10 16 Q16 8 22 16 Q16 24 10 16Z" fill="#E63312" opacity="0.9"/>
+                    <circle cx="16" cy="16" r="3" fill="#E63312"/>
+                </svg>
+                <span>NovaCell</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recharge Plans -->
+    <section class="plans" id="plans">
+        <div class="plans-header">
+            <h1 class="plans-title">Recarregue e ganhe bônus</h1>
+            <p class="plans-subtitle">Escolha o valor da sua recarga e aproveite bônus exclusivos!</p>
+        </div>
+
+        <div class="plans-grid">
+            <div class="plan-card" data-plan="15">
+                <div class="plan-value">
+                    <span class="plan-currency">R$</span>
+                    <span class="plan-amount">15</span>
+                </div>
+                <button class="plan-btn" aria-label="Recarregar R$15">Recarregar</button>
+            </div>
+
+            <div class="plan-card" data-plan="20">
+                <div class="plan-value">
+                    <span class="plan-currency">R$</span>
+                    <span class="plan-amount">20</span>
+                </div>
+                <span class="plan-bonus">+1GB de bônus</span>
+                <button class="plan-btn" aria-label="Recarregar R$20">Recarregar</button>
+            </div>
+
+            <div class="plan-card" data-plan="30">
+                <div class="plan-value">
+                    <span class="plan-currency">R$</span>
+                    <span class="plan-amount">30</span>
+                </div>
+                <span class="plan-bonus">+2GB de bônus</span>
+                <button class="plan-btn" aria-label="Recarregar R$30">Recarregar</button>
+            </div>
+
+            <div class="plan-card" data-plan="40">
+                <div class="plan-value">
+                    <span class="plan-currency">R$</span>
+                    <span class="plan-amount">40</span>
+                </div>
+                <span class="plan-bonus">+3GB de bônus</span>
+                <button class="plan-btn" aria-label="Recarregar R$40">Recarregar</button>
+            </div>
+        </div>
+
+        <button class="see-more-btn" id="seeMoreBtn" aria-label="Ver mais valores de recarga">
+            Ver mais valores
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+
+        <!-- Extra plans (hidden by default) -->
+        <div class="plans-grid plans-extra" id="plansExtra">
+            <div class="plan-card" data-plan="50">
+                <div class="plan-value">
+                    <span class="plan-currency">R$</span>
+                    <span class="plan-amount">50</span>
+                </div>
+                <span class="plan-bonus">+5GB de bônus</span>
+                <button class="plan-btn" aria-label="Recarregar R$50">Recarregar</button>
+            </div>
+
+            <div class="plan-card" data-plan="75">
+                <div class="plan-value">
+                    <span class="plan-currency">R$</span>
+                    <span class="plan-amount">75</span>
+                </div>
+                <span class="plan-bonus">+7GB de bônus</span>
+                <button class="plan-btn" aria-label="Recarregar R$75">Recarregar</button>
+            </div>
+
+            <div class="plan-card" data-plan="100">
+                <div class="plan-value">
+                    <span class="plan-currency">R$</span>
+                    <span class="plan-amount">100</span>
+                </div>
+                <span class="plan-bonus">+10GB de bônus</span>
+                <button class="plan-btn" aria-label="Recarregar R$100">Recarregar</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scheduled Recharge Banner -->
+    <section class="scheduled" id="scheduled">
+        <div class="scheduled-banner">
+            <div class="scheduled-banner-content">
+                <p class="scheduled-banner-text">Esquecer de recarregar e ficar sem crédito?</p>
+                <p class="scheduled-banner-strong">Nunca mais!</p>
+            </div>
+            <div class="scheduled-banner-right">
+                <div class="scheduled-banner-tag">PROGRAME SUA RECARGA<br>NO CARTÃO</div>
+                <div class="scheduled-banner-price">
+                    <span class="scheduled-price-label">a partir de</span>
+                    <span class="scheduled-price-value">R$<strong>30</strong><sup>,00</sup></span>
+                </div>
+                <div class="scheduled-banner-bonus">
+                    <span>Ganhe</span>
+                    <span class="scheduled-bonus-value">+10<small>GB</small></span>
+                    <span class="scheduled-bonus-sub">na primeira cobrança</span>
+                </div>
+            </div>
+            <img src="images/promo-model.png" alt="Modelo com smartphone NovaCell" class="scheduled-banner-img" loading="lazy" width="180" height="220">
+        </div>
+
+        <div class="scheduled-content">
+            <h2 class="scheduled-title">Com a Programada, você não fica sem créditos!</h2>
+            <ul class="scheduled-list">
+                <li>
+                    <span class="scheduled-icon">🔄</span>
+                    <span><strong class="text-accent">Recarga automática</strong> todos os meses</span>
+                </li>
+                <li>
+                    <span class="scheduled-icon">📅</span>
+                    <span><strong>Sempre na data programada</strong></span>
+                </li>
+                <li>
+                    <span class="scheduled-icon">💰</span>
+                    <span><strong>Sem custos</strong> e <strong class="text-accent">sem fidelidade</strong></span>
+                </li>
+                <li>
+                    <span class="scheduled-icon">⭐</span>
+                    <span>Ganhe <strong class="text-accent">10GB de bônus</strong> no primeiro mês</span>
+                </li>
+                <li>
+                    <span class="scheduled-icon">✏️</span>
+                    <span><strong class="text-accent">Edite</strong> ou <strong class="text-accent">cancele</strong> a qualquer momento</span>
+                </li>
+            </ul>
+            <button class="btn-primary" aria-label="Programar recarga automática">Programar recarga</button>
+            <button class="btn-outline" aria-label="Gerenciar recarga existente">Gerenciar recarga</button>
+        </div>
+    </section>
+
+    <!-- TV Section -->
+    <section class="tv-section" id="tv">
+        <h2 class="tv-title">NovaCell TV Pré-pago</h2>
+        <p class="tv-subtitle">Programação do seu jeito, sem mensalidade e sem fidelidade.</p>
+
+        <div class="tv-card">
+            <div class="tv-card-badge">Inicial</div>
+            <h3 class="tv-card-title">+ de 40 canais</h3>
+            <div class="tv-card-features">
+                <div class="tv-feature">
+                    <span>Canais inclusos</span>
+                    <div class="tv-channels">
+                        <span class="tv-channel-dot" style="background:#1a8e3a"></span>
+                        <span class="tv-channel-dot" style="background:#f5a623"></span>
+                        <span class="tv-channel-dot" style="background:#4a90d9"></span>
+                    </div>
+                </div>
+                <div class="tv-feature">
+                    <span>Recargas de 30, 60, 90 e 180 dias</span>
+                    <span class="tv-feature-icon">📡</span>
+                </div>
+                <div class="tv-feature">
+                    <span>Recarregue quando quiser</span>
+                    <span class="tv-feature-icon">📺</span>
+                </div>
+            </div>
+            <div class="tv-card-price">
+                <div class="tv-price-label">Valor mensal</div>
+                <div class="tv-price-value">
+                    <span class="tv-price-currency">R$</span>
+                    <span class="tv-price-amount">20</span>
+                    <span class="tv-price-cents">,00</span>
+                </div>
+                <div class="tv-price-validity">Validade 30 dias</div>
+            </div>
+            <button class="plan-btn tv-btn" aria-label="Recarregar NovaCell TV">Recarregar</button>
+        </div>
+    </section>
+
+    <!-- Other Offers Carousel -->
+    <section class="offers" id="offers">
+        <h2 class="offers-title">Outras ofertas para você</h2>
+        <div class="offers-carousel">
+            <div class="offer-card">
+                <div class="offer-card-inner offer-card-blue">
+                    <div class="offer-card-text">
+                        <h3>No Meu NovaCell APP, sua Recarga vale mais!</h3>
+                        <p>Recarregou? <strong>Ganhou!</strong></p>
+                    </div>
+                    <div class="offer-card-badge">
+                        <span class="offer-badge-label">de internet na 1ª recarga</span>
+                        <div class="offer-badge-value">
+                            <span>10</span>
+                            <small>GB</small>
+                        </div>
+                        <span class="offer-badge-sub">de internet em cada recarga</span>
+                    </div>
+                </div>
+            </div>
+            <div class="offer-card">
+                <div class="offer-card-inner offer-card-gradient">
+                    <div class="offer-card-text">
+                        <h3>Meu NovaCell App</h3>
+                        <p>Baixe o Meu NovaCell App e receba até 10GB de internet. Aproveite para gerenciar tudo em um só lugar.</p>
+                    </div>
+                    <button class="offer-card-btn" aria-label="Baixar app NovaCell">Eu quero</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- App Download -->
+    <section class="app-section" id="app">
+        <h3 class="app-section-title">APP NOVACELL RECARGA</h3>
+        <div class="app-buttons">
+            <a href="#" class="store-btn" aria-label="Baixar na Google Play">
+                <svg width="20" height="22" viewBox="0 0 20 22" fill="none"><path d="M1 1L11 11L1 21V1Z" fill="#4CAF50"/><path d="M1 1L14 8L11 11L1 1Z" fill="#FFC107"/><path d="M1 21L14 14L11 11L1 21Z" fill="#F44336"/><path d="M14 8L19 11L14 14L11 11L14 8Z" fill="#2196F3"/></svg>
+                <div>
+                    <small>DISPONÍVEL NO</small>
+                    <strong>Google Play</strong>
+                </div>
+            </a>
+            <a href="#" class="store-btn" aria-label="Baixar na App Store">
+                <svg width="18" height="22" viewBox="0 0 18 22" fill="none"><path d="M14.5 0C13 0 11.2 1 10.2 2.2C9.3 3.3 8.5 5 8.8 6.5C10.4 6.6 12 5.7 13 4.5C13.9 3.4 14.6 1.7 14.5 0ZM17.7 16.3C17 17.8 15.6 19.8 13.8 19.8C12.2 19.9 11.6 18.9 9.7 18.9C7.8 18.9 7.1 19.8 5.6 19.9C3.9 20 2.2 17.5 1.5 16C0 12.8 0.4 8.6 2.5 6.3C4 4.7 6 3.8 7.8 3.8C9.5 3.8 10.6 4.8 12 4.8C13.3 4.8 14.2 3.7 16.1 3.8C17.2 3.8 19 4.3 17.7 16.3Z" fill="white"/></svg>
+                <div>
+                    <small>Baixar na</small>
+                    <strong>App Store</strong>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Recharge Options -->
+    <section class="recharge-options" id="options">
+        <h3 class="recharge-options-title">RECARREGUE TAMBÉM</h3>
+        <div class="recharge-options-grid">
+            <div class="recharge-option">
+                <span class="recharge-option-icon">💬</span>
+                <div>
+                    <strong>WhatsApp</strong>
+                    <span>(11) 98765-4321</span>
+                </div>
+            </div>
+            <div class="recharge-option">
+                <span class="recharge-option-icon">📱</span>
+                <div>
+                    <strong>Meu NovaCell</strong>
+                </div>
+            </div>
+            <div class="recharge-option">
+                <span class="recharge-option-icon">📞</span>
+                <div>
+                    <strong>Telefone *444</strong>
+                </div>
+            </div>
+            <div class="recharge-option">
+                <span class="recharge-option-icon">✉️</span>
+                <div>
+                    <strong>SMS *444</strong>
+                </div>
+            </div>
+            <div class="recharge-option">
+                <span class="recharge-option-icon">📲</span>
+                <div>
+                    <strong>USSD *444#</strong>
+                </div>
+            </div>
+            <div class="recharge-option">
+                <div class="recharge-option-pay">
+                    <svg viewBox="0 0 32 32" width="18" height="18">
+                        <circle cx="16" cy="16" r="14" fill="#E63312"/>
+                        <path d="M10 16 Q16 8 22 16 Q16 24 10 16Z" fill="#fff" opacity="0.9"/>
+                        <circle cx="16" cy="16" r="3" fill="#fff"/>
+                    </svg>
+                    <strong>pay</strong>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="footer">
+        <div class="footer-links">
+            <a href="#">Regulamento Completo</a>
+            <a href="#">Política de Privacidade</a>
+            <a href="#">Portal de Privacidade</a>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
