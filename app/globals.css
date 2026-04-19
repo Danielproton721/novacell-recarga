@@ -740,6 +740,20 @@ a {
   color: var(--white);
 }
 
+.offer-card-image {
+  padding: 0;
+  min-height: auto;
+  overflow: hidden;
+  line-height: 0;
+  background: transparent;
+}
+
+.offer-card-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .offer-card-gradient {
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
   color: var(--white);
