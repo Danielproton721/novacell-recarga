@@ -111,12 +111,15 @@ a {
 
 .hero-banner {
   position: relative;
-  background: linear-gradient(135deg, var(--red-primary) 0%, var(--red-dark) 50%, var(--red-deeper) 100%);
-  padding: 20px 16px 0;
+  width: 100%;
+  line-height: 0;
   overflow: hidden;
-  min-height: 220px;
-  display: flex;
-  align-items: flex-end;
+}
+
+.hero-banner-img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 .hero-content {
