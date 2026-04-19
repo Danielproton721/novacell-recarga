@@ -1,21 +1,30 @@
-"use client";
+"use client"
 
-import { useState } from "react";
+import { useState } from "react"
+import RechargeModal from "./RechargeModal"
 
 const mainPlans = [
   { value: 15, bonus: null },
   { value: 20, bonus: "+1GB de bônus" },
   { value: 30, bonus: "+2GB de bônus" },
   { value: 40, bonus: "+3GB de bônus" },
-];
+]
 
 const extraPlans = [
   { value: 50, bonus: "+5GB de bônus" },
   { value: 75, bonus: "+7GB de bônus" },
   { value: 100, bonus: "+10GB de bônus" },
-];
+]
 
-function PlanCard({ value, bonus }: { value: number; bonus: string | null }) {
+function PlanCard({
+  value,
+  bonus,
+  onSelect,
+}: {
+  value: number
+  bonus: string | null
+  onSelect: (value: number) => void
+}) {
   return (
     <div className="plan-card" data-plan={value}>
       <div className="plan-value">
@@ -23,15 +32,20 @@ function PlanCard({ value, bonus }: { value: number; bonus: string | null }) {
         <span className="plan-amount">{value}</span>
       </div>
       {bonus && <span className="plan-bonus">{bonus}</span>}
-      <button className="plan-btn" aria-label={`Recarregar R$${value}`}>
+      <button
+        className="plan-btn"
+        aria-label={`Recarregar R$${value}`}
+        onClick={() => onSelect(value)}
+      >
         Recarregar
       </button>
     </div>
-  );
+  )
 }
 
 export default function Plans() {
-  const [showExtra, setShowExtra] = useState(false);
+  const [showExtra, setShowExtra] = useState(false)
+  const [selectedValue, setSelectedValue] = useState<number | null>(null)
 
   return (
     <section className="plans" id="plans">
@@ -44,7 +58,12 @@ export default function Plans() {
 
       <div className="plans-grid">
         {mainPlans.map((plan) => (
-          <PlanCard key={plan.value} value={plan.value} bonus={plan.bonus} />
+          <PlanCard
+            key={plan.value}
+            value={plan.value}
+            bonus={plan.bonus}
+            onSelect={setSelectedValue}
+          />
         ))}
       </div>
 
@@ -68,10 +87,20 @@ export default function Plans() {
       {showExtra && (
         <div className="plans-grid plans-extra visible">
           {extraPlans.map((plan) => (
-            <PlanCard key={plan.value} value={plan.value} bonus={plan.bonus} />
+            <PlanCard
+              key={plan.value}
+              value={plan.value}
+              bonus={plan.bonus}
+              onSelect={setSelectedValue}
+            />
           ))}
         </div>
       )}
+
+      <RechargeModal
+        value={selectedValue}
+        onClose={() => setSelectedValue(null)}
+      />
     </section>
-  );
+  )
 }
