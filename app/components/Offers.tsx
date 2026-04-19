@@ -14,17 +14,13 @@ export default function Offers() {
           </div>
         </div>
         <div className="offer-card">
-          <div className="offer-card-inner offer-card-gradient">
-            <div className="offer-card-text">
-              <h3>Meu NovaCell App</h3>
-              <p>
-                Baixe o Meu NovaCell App e receba até 10GB de internet. Aproveite para
-                gerenciar tudo em um só lugar.
-              </p>
-            </div>
-            <button className="offer-card-btn" aria-label="Baixar app NovaCell">
-              Eu quero
-            </button>
+          <div className="offer-card-inner offer-card-image">
+            <img
+              src="/images/claro-flex-banner.png"
+              alt="Claro Flex: 20GB (15GB plano + 5GB redes sociais) com WhatsApp ilimitado por R$ 19,90 no primeiro mês"
+              className="offer-card-img"
+              loading="lazy"
+            />
           </div>
         </div>
       </div>
