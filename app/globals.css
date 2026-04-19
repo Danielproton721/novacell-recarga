@@ -333,6 +333,12 @@ a {
   color: var(--red-primary);
 }
 
+.plan-validity {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--gray-600);
+}
+
 .plan-btn {
   width: 100%;
   padding: 10px 16px;
