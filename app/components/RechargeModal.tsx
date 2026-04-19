@@ -15,6 +15,7 @@ type PixData = {
 
 interface RechargeModalProps {
   value: number | null
+  variant?: string
   onClose: () => void
 }
 
@@ -41,7 +42,7 @@ function formatCurrency(value: number) {
   })
 }
 
-export default function RechargeModal({ value, onClose }: RechargeModalProps) {
+export default function RechargeModal({ value, variant, onClose }: RechargeModalProps) {
   const [step, setStep] = useState<Step>("phone")
   const [phone, setPhone] = useState("")
   const [name, setName] = useState("")
@@ -130,6 +131,7 @@ export default function RechargeModal({ value, onClose }: RechargeModalProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           value,
+          variant: variant || `Recarga R$ ${value},00`,
           phone: phoneDigits,
           name: name.trim(),
           cpf: cpfDigits,
