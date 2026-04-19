@@ -8,7 +8,6 @@ type TvPlan = {
   name: string
   channels: string
   value: number
-  dots: string[]
   highlight?: boolean
 }
 
@@ -17,26 +16,22 @@ const tvPlans: TvPlan[] = [
     name: "Inicial",
     channels: "+ de 40 canais",
     value: 20,
-    dots: ["#1a8e3a", "#f5a623", "#4a90d9"],
   },
   {
     name: "Light",
     channels: "+ de 90 canais",
     value: 60,
-    dots: ["#e63312", "#1a8e3a", "#111827"],
     highlight: true,
   },
   {
     name: "Mix",
     channels: "+ de 130 canais",
     value: 90,
-    dots: ["#f5a623", "#e63312", "#6b7280"],
   },
   {
     name: "Top",
     channels: "+ de 150 canais",
     value: 110,
-    dots: ["#1e88e5", "#111827", "#e63312"],
   },
 ]
 
@@ -72,18 +67,6 @@ export default function TvSection() {
             <h3 className="tv-card-title">{plan.channels}</h3>
 
             <div className="tv-card-features">
-              <div className="tv-feature">
-                <span>Canais inclusos</span>
-                <div className="tv-channels">
-                  {plan.dots.map((color, i) => (
-                    <span
-                      key={i}
-                      className="tv-channel-dot"
-                      style={{ background: color }}
-                    />
-                  ))}
-                </div>
-              </div>
               <div className="tv-feature">
                 <span>Recarregue quando quiser</span>
                 <span className="tv-feature-icon" aria-hidden="true">
