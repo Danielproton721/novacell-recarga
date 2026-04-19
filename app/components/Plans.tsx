@@ -4,25 +4,27 @@ import { useState } from "react"
 import RechargeModal from "./RechargeModal"
 
 const mainPlans = [
-  { value: 15, bonus: null },
-  { value: 20, bonus: "+1GB de bônus" },
-  { value: 30, bonus: "+2GB de bônus" },
-  { value: 40, bonus: "+3GB de bônus" },
+  { value: 15, bonus: null, days: 30 },
+  { value: 20, bonus: "+1GB de bônus", days: 30 },
+  { value: 30, bonus: "+2GB de bônus", days: 60 },
+  { value: 40, bonus: "+3GB de bônus", days: 90 },
 ]
 
 const extraPlans = [
-  { value: 50, bonus: "+5GB de bônus" },
-  { value: 75, bonus: "+7GB de bônus" },
-  { value: 100, bonus: "+10GB de bônus" },
+  { value: 50, bonus: "+5GB de bônus", days: 120 },
+  { value: 75, bonus: "+7GB de bônus", days: 150 },
+  { value: 100, bonus: "+10GB de bônus", days: 180 },
 ]
 
 function PlanCard({
   value,
   bonus,
+  days,
   onSelect,
 }: {
   value: number
   bonus: string | null
+  days: number
   onSelect: (value: number) => void
 }) {
   return (
@@ -32,6 +34,7 @@ function PlanCard({
         <span className="plan-amount">{value}</span>
       </div>
       {bonus && <span className="plan-bonus">{bonus}</span>}
+      <span className="plan-validity">Válido por {days} dias</span>
       <button
         className="plan-btn"
         aria-label={`Recarregar R$${value}`}
@@ -72,6 +75,7 @@ export default function Plans() {
             key={plan.value}
             value={plan.value}
             bonus={plan.bonus}
+            days={plan.days}
             onSelect={(v) => handleSelect(v, plan.bonus)}
           />
         ))}
@@ -101,6 +105,7 @@ export default function Plans() {
               key={plan.value}
               value={plan.value}
               bonus={plan.bonus}
+              days={plan.days}
               onSelect={(v) => handleSelect(v, plan.bonus)}
             />
           ))}
