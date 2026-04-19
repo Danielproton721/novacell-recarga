@@ -56,7 +56,7 @@ export default function TvSection() {
         Programação do seu jeito, sem mensalidade e sem fidelidade.
       </p>
 
-      <div className="tv-grid">
+      <div className="tv-carousel">
         {tvPlans.map((plan) => (
           <div key={plan.name} className="tv-card">
             <div className="tv-card-header">
