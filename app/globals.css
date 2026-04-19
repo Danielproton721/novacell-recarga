@@ -839,21 +839,23 @@ a {
 .app-buttons {
   display: flex;
   gap: 12px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .store-btn {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 16px;
+  padding: 10px 14px;
   background: var(--black);
   border: 1.5px solid rgba(255, 255, 255, 0.35);
   border-radius: 8px;
   color: var(--white);
   text-decoration: none;
   transition: border-color 200ms var(--ease-out), background 200ms var(--ease-out);
-  min-width: 150px;
+  flex: 1 1 0;
+  min-width: 0;
+  white-space: nowrap;
 }
 
 .store-btn:hover {
@@ -940,12 +942,14 @@ a {
 
 .claro-pay-logo {
   display: inline-flex;
-  align-items: baseline;
-  gap: 2px;
+  align-items: center;
+  gap: 3px;
   font-weight: 700;
   color: var(--white);
   font-size: 1rem;
   letter-spacing: -0.01em;
+  white-space: nowrap;
+  line-height: 1;
 }
 
 .claro-pay-claro {
@@ -953,8 +957,10 @@ a {
 }
 
 .claro-pay-tick {
-  align-self: center;
-  margin: 0 1px 2px;
+  display: inline-block;
+  flex-shrink: 0;
+  transform: translateY(-4px);
+  margin: 0 1px;
 }
 
 .claro-pay-pay {
