@@ -124,13 +124,12 @@ a {
 }
 
 .hero-banner-img {
-  width: calc(100% + 20px);
+  width: 100%;
   height: auto;
   display: block;
-  aspect-ratio: 720 / 180;
+  aspect-ratio: 1920 / 300;
   object-fit: cover;
   object-position: center;
-  margin-left: -20px;
 }
 
 .hero-content {
