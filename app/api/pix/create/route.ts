@@ -1,192 +1,208 @@
 import { NextResponse } from "next/server"
 
 /**
- * Cria uma cobrança PIX via Pagou AI (API v2).
- * Docs: https://developer.pagou.ai/payments/pix/accept-payments
- *       https://developer.pagou.ai/start-here/authentication
+ * Integração Pagou AI v1 (legacy)
+ * Docs:
+ *   - https://pagouai.readme.io/reference/introducao
+ *   - https://pagouai.readme.io/reference/criar-transacao
+ *
+ * Autenticação: Basic Auth com "SECRET_KEY:x" em base64
+ * Endpoint:    https://api.conta.pagou.ai/v1/transactions
  *
  * Body esperado do frontend:
  *   { value: number, phone: string, name: string, cpf: string }
  *
  * Resposta retornada ao frontend:
- *   { txid, qrCode, expiresAt, amount, phone }
+ *   { txid, qrCode, qrCodeImage, expiresAt, amount, phone }
  */
 
-type PagouProblem = {
-  type?: string
-  title?: string
-  status?: number
-  detail?: string
+type CreatePixBody = {
+  value: number
+  phone: string
+  name: string
+  cpf: string
 }
 
-type PagouAiResponse = {
-  success?: boolean
-  requestId?: string
-  message?: string
-  data?: {
-    id: string
-    status: string
-    amount: number
-    method: string
-    pix?: {
-      qr_code: string
-      expiration_date: string
-      end_to_end_id?: string | null
-      receipt_url?: string | null
-    }
-  }
-} & PagouProblem
+const DEFAULT_BASE_URL = "https://api.conta.pagou.ai"
 
-function resolveBaseUrl(secretKey: string): string {
-  if (process.env.PAGOUAI_BASE_URL) return process.env.PAGOUAI_BASE_URL
-  // Heuristica: chaves de sandbox costumam ter "test" ou "sandbox" no prefixo
-  const key = secretKey.toLowerCase()
-  if (key.includes("test") || key.includes("sandbox")) {
-    return "https://api-sandbox.pagou.ai"
-  }
-  return "https://api.pagou.ai"
+function onlyDigits(s: string): string {
+  return (s ?? "").replace(/\D/g, "")
 }
 
 export async function POST(request: Request) {
+  let body: CreatePixBody
   try {
-    const { value, phone, name, cpf } = (await request.json()) as {
-      value: number
-      phone: string
-      name: string
-      cpf: string
-    }
+    body = (await request.json()) as CreatePixBody
+  } catch {
+    return NextResponse.json({ error: "JSON inválido" }, { status: 400 })
+  }
 
-    if (!value || !phone || !name || !cpf) {
-      return NextResponse.json(
-        { error: "value, phone, name e cpf são obrigatórios" },
-        { status: 400 },
-      )
-    }
+  const { value, phone, name, cpf } = body ?? {}
 
-    const rawKey = process.env.PAGOUAI_SECRET_KEY
-    if (!rawKey) {
-      return NextResponse.json(
-        { error: "Chave do gateway não configurada" },
-        { status: 500 },
-      )
-    }
+  if (!value || value <= 0) {
+    return NextResponse.json({ error: "Valor inválido" }, { status: 400 })
+  }
+  if (!phone || !name || !cpf) {
+    return NextResponse.json(
+      { error: "Nome, CPF e telefone são obrigatórios" },
+      { status: 400 },
+    )
+  }
 
-    // Remove espaços/quebras de linha acidentais
-    const secretKey = rawKey.trim()
-    const baseUrl = resolveBaseUrl(secretKey)
+  const cpfDigits = onlyDigits(cpf)
+  const phoneDigits = onlyDigits(phone)
 
-    const phoneDigits = phone.replace(/\D/g, "")
-    const cpfDigits = cpf.replace(/\D/g, "")
-    const amountCents = Math.round(value * 100)
-    const externalRef = `claro_${Date.now()}_${Math.floor(Math.random() * 1000)}`
+  if (cpfDigits.length !== 11) {
+    return NextResponse.json({ error: "CPF deve ter 11 dígitos" }, { status: 400 })
+  }
+  if (phoneDigits.length < 10 || phoneDigits.length > 11) {
+    return NextResponse.json(
+      { error: "Telefone deve ter 10 ou 11 dígitos (com DDD)" },
+      { status: 400 },
+    )
+  }
 
-    if (cpfDigits.length !== 11) {
-      return NextResponse.json({ error: "CPF inválido" }, { status: 400 })
-    }
+  const rawKey = process.env.PAGOUAI_SECRET_KEY
+  if (!rawKey) {
+    console.log("[v0] PAGOUAI_SECRET_KEY não configurada")
+    return NextResponse.json(
+      { error: "Servidor de pagamento não configurado" },
+      { status: 500 },
+    )
+  }
 
-    if (phoneDigits.length < 10 || phoneDigits.length > 11) {
-      return NextResponse.json({ error: "Telefone inválido" }, { status: 400 })
-    }
+  const secretKey = rawKey.trim()
+  const baseUrl = (process.env.PAGOUAI_BASE_URL ?? DEFAULT_BASE_URL).replace(/\/+$/, "")
+  const endpoint = `${baseUrl}/v1/transactions`
 
-    const payload = {
-      external_ref: externalRef,
-      amount: amountCents,
-      currency: "BRL",
-      method: "pix",
-      buyer: {
-        name: name.trim(),
-        email: `${phoneDigits}@claro-recarga.com.br`,
-        phone: phoneDigits,
-        document: {
-          type: "CPF",
-          number: cpfDigits,
-        },
+  const amountCents = Math.round(value * 100)
+  const email = `${phoneDigits}@novacell.recarga`
+
+  // expirationDate v1 aceita formato AAAA-MM-DD (data do dia, validade ~24h)
+  const expirationDate = new Date(Date.now() + 24 * 60 * 60 * 1000)
+    .toISOString()
+    .slice(0, 10)
+
+  // Payload conforme docs v1
+  const payload = {
+    amount: amountCents,
+    paymentMethod: "pix",
+    customer: {
+      name: name.trim(),
+      email,
+      phone: phoneDigits,
+      document: {
+        number: cpfDigits,
+        type: "cpf",
       },
-      products: [
-        {
-          name: `Recarga Claro R$ ${value.toFixed(2).replace(".", ",")}`,
-          price: amountCents,
-          quantity: 1,
-          tangible: false,
-        },
-      ],
-    }
+    },
+    items: [
+      {
+        title: `Recarga de celular R$ ${value.toFixed(2).replace(".", ",")}`,
+        quantity: 1,
+        unitPrice: amountCents,
+        tangible: false,
+      },
+    ],
+    pix: {
+      expirationDate,
+    },
+    metadata: JSON.stringify({
+      product: "recarga-celular",
+      phone: phoneDigits,
+      value,
+    }),
+  }
 
-    const endpoint = `${baseUrl}/v2/transactions`
-    console.log("[v0] Pagou AI POST:", endpoint)
+  // Basic Auth: base64("SECRET_KEY:x")
+  const basicAuth = Buffer.from(`${secretKey}:x`).toString("base64")
 
-    const upstream = await fetch(endpoint, {
+  console.log("[v0] Pagou AI v1 POST:", endpoint)
+
+  let upstream: Response
+  try {
+    upstream = await fetch(endpoint, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${secretKey}`,
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        authorization: `Basic ${basicAuth}`,
+        "content-type": "application/json",
+        accept: "application/json",
       },
       body: JSON.stringify(payload),
       cache: "no-store",
     })
-
-    const rawText = await upstream.text()
-    let json: PagouAiResponse = {}
-    try {
-      json = rawText ? (JSON.parse(rawText) as PagouAiResponse) : {}
-    } catch {
-      console.log("[v0] Resposta não-JSON do Pagou AI:", rawText.slice(0, 300))
-    }
-
-    if (!upstream.ok || !json.data) {
-      console.log(
-        "[v0] Pagou AI falhou:",
-        upstream.status,
-        JSON.stringify(json).slice(0, 500),
-      )
-
-      // Erro de autenticação: devolve mensagem explicativa
-      if (upstream.status === 401) {
-        return NextResponse.json(
-          {
-            error:
-              "Chave do gateway inválida. Verifique se PAGOUAI_SECRET_KEY é uma chave v2 válida e está no ambiente correto (sandbox vs produção).",
-            detail: json.detail ?? json.message ?? null,
-            endpoint,
-          },
-          { status: 401 },
-        )
-      }
-
-      const message =
-        json.detail ??
-        json.title ??
-        json.message ??
-        `Erro ao criar PIX no gateway (${upstream.status})`
-
-      return NextResponse.json(
-        { error: message },
-        { status: upstream.status >= 400 ? upstream.status : 502 },
-      )
-    }
-
-    const pix = json.data.pix
-    if (!pix?.qr_code) {
-      console.log("[v0] Resposta Pagou AI sem qr_code:", json)
-      return NextResponse.json(
-        { error: "Gateway não retornou o código PIX" },
-        { status: 502 },
-      )
-    }
-
-    return NextResponse.json({
-      txid: json.data.id,
-      qrCode: pix.qr_code,
-      expiresAt: pix.expiration_date,
-      amount: value,
-      phone: phoneDigits,
-    })
-  } catch (error) {
-    console.log("[v0] Erro ao criar PIX:", error)
+  } catch (err) {
+    console.log("[v0] Falha na chamada ao gateway:", err)
     return NextResponse.json(
-      { error: "Erro ao criar cobrança PIX" },
-      { status: 500 },
+      { error: "Falha de conexão com o gateway de pagamento" },
+      { status: 502 },
     )
   }
+
+  const raw = await upstream.text()
+  let data: any = null
+  try {
+    data = raw ? JSON.parse(raw) : null
+  } catch {
+    data = null
+  }
+
+  if (!upstream.ok) {
+    const detail =
+      data?.message ||
+      data?.error ||
+      data?.errors?.[0]?.message ||
+      (typeof raw === "string" ? raw.slice(0, 400) : "") ||
+      "Erro desconhecido no gateway"
+
+    console.log("[v0] Gateway retornou erro:", upstream.status, detail)
+
+    if (upstream.status === 401) {
+      return NextResponse.json(
+        {
+          error:
+            "Chave PAGOUAI_SECRET_KEY inválida. Confira se está correta (copiada do painel sem espaços) e se é a chave SECRET (não a PUBLIC).",
+          detail,
+          endpoint,
+        },
+        { status: 401 },
+      )
+    }
+
+    return NextResponse.json(
+      { error: `Erro ao criar PIX no gateway (${upstream.status})`, detail },
+      { status: 502 },
+    )
+  }
+
+  // Resposta v1 contém `pix: { qrcode, url, expirationDate }`
+  const pix = data?.pix ?? {}
+  const qrCode: string = pix.qrcode ?? pix.qrCode ?? ""
+  const qrCodeImage: string | null = pix.url ?? null
+  const expirationRaw = pix.expirationDate ?? pix.expiration_date
+
+  if (!qrCode) {
+    console.log("[v0] Resposta sem QR Code:", JSON.stringify(data).slice(0, 400))
+    return NextResponse.json(
+      { error: "Gateway não retornou QR Code PIX" },
+      { status: 502 },
+    )
+  }
+
+  // Para o timer do frontend: v1 retorna apenas a data; usamos 10 min como countdown visual.
+  let expiresAt: string
+  if (expirationRaw && /\d{4}-\d{2}-\d{2}T/.test(String(expirationRaw))) {
+    expiresAt = new Date(expirationRaw).toISOString()
+  } else {
+    expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString()
+  }
+
+  return NextResponse.json({
+    txid: data?.id ?? data?.transactionId ?? null,
+    qrCode,
+    qrCodeImage,
+    expiresAt,
+    amount: value,
+    phone: phoneDigits,
+  })
 }
