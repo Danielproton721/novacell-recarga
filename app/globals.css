@@ -499,10 +499,24 @@ a {
 }
 
 .scheduled-icon {
-  font-size: 1rem;
   flex-shrink: 0;
-  width: 20px;
-  text-align: center;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background: rgba(230, 51, 18, 0.1);
+  color: var(--red-primary);
+}
+
+.scheduled-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.scheduled-list li {
+  align-items: center;
 }
 
 .text-accent {
@@ -619,7 +633,15 @@ a {
 }
 
 .tv-feature-icon {
-  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--red-primary);
+}
+
+.tv-feature-icon svg {
+  width: 18px;
+  height: 18px;
 }
 
 .tv-card-price {
@@ -873,8 +895,20 @@ a {
 }
 
 .recharge-option-icon {
-  font-size: 0.9rem;
   flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--white);
+}
+
+.recharge-option-icon svg {
+  width: 18px;
+  height: 18px;
 }
 
 .recharge-option-pay {

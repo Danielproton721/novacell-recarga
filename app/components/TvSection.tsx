@@ -1,3 +1,5 @@
+import { CalendarRange, Tv } from "lucide-react";
+
 export default function TvSection() {
   return (
     <section className="tv-section" id="tv">
@@ -20,11 +22,15 @@ export default function TvSection() {
           </div>
           <div className="tv-feature">
             <span>Recargas de 30, 60, 90 e 180 dias</span>
-            <span className="tv-feature-icon">📡</span>
+            <span className="tv-feature-icon" aria-hidden="true">
+              <CalendarRange size={20} strokeWidth={2} />
+            </span>
           </div>
           <div className="tv-feature">
             <span>Recarregue quando quiser</span>
-            <span className="tv-feature-icon">📺</span>
+            <span className="tv-feature-icon" aria-hidden="true">
+              <Tv size={20} strokeWidth={2} />
+            </span>
           </div>
         </div>
         <div className="tv-card-price">

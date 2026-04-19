@@ -1,35 +1,47 @@
+import { MessageCircle, Smartphone, Phone, Mail, Hash } from "lucide-react";
+
 export default function RechargeOptions() {
   return (
     <section className="recharge-options" id="options">
       <h3 className="recharge-options-title">RECARREGUE TAMBÉM</h3>
       <div className="recharge-options-grid">
         <div className="recharge-option">
-          <span className="recharge-option-icon">💬</span>
+          <span className="recharge-option-icon" aria-hidden="true">
+            <MessageCircle size={22} strokeWidth={2} />
+          </span>
           <div>
             <strong>WhatsApp</strong>
             <span>(11) 98765-4321</span>
           </div>
         </div>
         <div className="recharge-option">
-          <span className="recharge-option-icon">📱</span>
+          <span className="recharge-option-icon" aria-hidden="true">
+            <Smartphone size={22} strokeWidth={2} />
+          </span>
           <div>
             <strong>Meu NovaCell</strong>
           </div>
         </div>
         <div className="recharge-option">
-          <span className="recharge-option-icon">📞</span>
+          <span className="recharge-option-icon" aria-hidden="true">
+            <Phone size={22} strokeWidth={2} />
+          </span>
           <div>
             <strong>Telefone *444</strong>
           </div>
         </div>
         <div className="recharge-option">
-          <span className="recharge-option-icon">✉️</span>
+          <span className="recharge-option-icon" aria-hidden="true">
+            <Mail size={22} strokeWidth={2} />
+          </span>
           <div>
             <strong>SMS *444</strong>
           </div>
         </div>
         <div className="recharge-option">
-          <span className="recharge-option-icon">📲</span>
+          <span className="recharge-option-icon" aria-hidden="true">
+            <Hash size={22} strokeWidth={2} />
+          </span>
           <div>
             <strong>USSD *444#</strong>
           </div>

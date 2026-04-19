@@ -1,3 +1,5 @@
+import { RefreshCw, CalendarDays, Wallet, Star, Pencil } from "lucide-react";
+
 export default function Scheduled() {
   return (
     <section className="scheduled" id="scheduled">
@@ -16,32 +18,42 @@ export default function Scheduled() {
         </h2>
         <ul className="scheduled-list">
           <li>
-            <span className="scheduled-icon">🔄</span>
+            <span className="scheduled-icon" aria-hidden="true">
+              <RefreshCw size={20} strokeWidth={2} />
+            </span>
             <span>
               <strong className="text-accent">Recarga automática</strong> todos os meses
             </span>
           </li>
           <li>
-            <span className="scheduled-icon">📅</span>
+            <span className="scheduled-icon" aria-hidden="true">
+              <CalendarDays size={20} strokeWidth={2} />
+            </span>
             <span>
               <strong>Sempre na data programada</strong>
             </span>
           </li>
           <li>
-            <span className="scheduled-icon">💰</span>
+            <span className="scheduled-icon" aria-hidden="true">
+              <Wallet size={20} strokeWidth={2} />
+            </span>
             <span>
               <strong>Sem custos</strong> e{" "}
               <strong className="text-accent">sem fidelidade</strong>
             </span>
           </li>
           <li>
-            <span className="scheduled-icon">⭐</span>
+            <span className="scheduled-icon" aria-hidden="true">
+              <Star size={20} strokeWidth={2} />
+            </span>
             <span>
               Ganhe <strong className="text-accent">10GB de bônus</strong> no primeiro mês
             </span>
           </li>
           <li>
-            <span className="scheduled-icon">✏️</span>
+            <span className="scheduled-icon" aria-hidden="true">
+              <Pencil size={20} strokeWidth={2} />
+            </span>
             <span>
               <strong className="text-accent">Edite</strong> ou{" "}
               <strong className="text-accent">cancele</strong> a qualquer momento
