@@ -84,6 +84,7 @@ a {
   padding: 12px 20px;
   display: flex;
   align-items: center;
+  background: var(--red-primary);
 }
 
 .logo {
@@ -95,12 +96,12 @@ a {
 .logo-text {
   font-size: 1.25rem;
   font-weight: 800;
-  color: var(--gray-900);
+  color: var(--white);
   letter-spacing: -0.02em;
 }
 
 .logo-accent {
-  color: var(--red-primary);
+  color: var(--orange-accent);
 }
 
 /* ============ HERO BANNER ============ */
