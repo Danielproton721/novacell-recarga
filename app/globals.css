@@ -884,9 +884,7 @@ a {
   padding: 24px 20px 28px;
   background: var(--black);
   border-top: 1px solid rgba(255, 255, 255, 0.15);
-  margin: 0 20px;
-  padding-left: 0;
-  padding-right: 0;
+  margin: 0;
 }
 
 .recharge-options-grid {
