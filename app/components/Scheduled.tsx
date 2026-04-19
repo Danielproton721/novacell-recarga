@@ -2,37 +2,11 @@ export default function Scheduled() {
   return (
     <section className="scheduled" id="scheduled">
       <div className="scheduled-banner">
-        <div className="scheduled-banner-content">
-          <p className="scheduled-banner-text">
-            Esquecer de recarregar e ficar sem crédito?
-          </p>
-          <p className="scheduled-banner-strong">Nunca mais!</p>
-        </div>
-        <div className="scheduled-banner-right">
-          <div className="scheduled-banner-tag">
-            PROGRAME SUA RECARGA
-            <br />
-            NO CARTÃO
-          </div>
-          <div className="scheduled-price-label">a partir de</div>
-          <div className="scheduled-price-value">
-            R$<strong>30</strong><sup>,00</sup>
-          </div>
-          <div className="scheduled-banner-bonus">
-            <span>Ganhe</span>
-            <span className="scheduled-bonus-value">
-              +10<small>GB</small>
-            </span>
-            <span className="scheduled-bonus-sub">na primeira cobrança</span>
-          </div>
-        </div>
         <img
-          src="/images/promo-model.png"
-          alt="Modelo com smartphone NovaCell"
+          src="/images/scheduled-banner.png"
+          alt="Programe sua recarga no cartão a partir de R$30 e ganhe +10GB na primeira cobrança"
           className="scheduled-banner-img"
           loading="lazy"
-          width={180}
-          height={220}
         />
       </div>
 
