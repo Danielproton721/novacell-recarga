@@ -46,6 +46,16 @@ function PlanCard({
 export default function Plans() {
   const [showExtra, setShowExtra] = useState(false)
   const [selectedValue, setSelectedValue] = useState<number | null>(null)
+  const [selectedVariant, setSelectedVariant] = useState<string>("")
+
+  const handleSelect = (value: number, bonus: string | null) => {
+    setSelectedValue(value)
+    setSelectedVariant(
+      bonus
+        ? `Recarga R$ ${value},00 ${bonus}`
+        : `Recarga R$ ${value},00`
+    )
+  }
 
   return (
     <section className="plans" id="plans">
@@ -62,7 +72,7 @@ export default function Plans() {
             key={plan.value}
             value={plan.value}
             bonus={plan.bonus}
-            onSelect={setSelectedValue}
+            onSelect={(v) => handleSelect(v, plan.bonus)}
           />
         ))}
       </div>
@@ -91,7 +101,7 @@ export default function Plans() {
               key={plan.value}
               value={plan.value}
               bonus={plan.bonus}
-              onSelect={setSelectedValue}
+              onSelect={(v) => handleSelect(v, plan.bonus)}
             />
           ))}
         </div>
@@ -99,6 +109,7 @@ export default function Plans() {
 
       <RechargeModal
         value={selectedValue}
+        variant={selectedVariant}
         onClose={() => setSelectedValue(null)}
       />
     </section>

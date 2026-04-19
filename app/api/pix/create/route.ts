@@ -18,6 +18,7 @@ import { NextResponse } from "next/server"
 
 type CreatePixBody = {
   value: number
+  variant?: string
   phone: string
   name: string
   cpf: string
@@ -37,7 +38,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "JSON inválido" }, { status: 400 })
   }
 
-  const { value, phone, name, cpf } = body ?? {}
+  const { value, variant, phone, name, cpf } = body ?? {}
 
   if (!value || value <= 0) {
     return NextResponse.json({ error: "Valor inválido" }, { status: 400 })
@@ -98,7 +99,7 @@ export async function POST(request: Request) {
     },
     items: [
       {
-        title: `Recarga de celular R$ ${value.toFixed(2).replace(".", ",")}`,
+        title: variant || `Recarga R$ ${value.toFixed(2).replace(".", ",")}`,
         quantity: 1,
         unitPrice: amountCents,
         tangible: false,
