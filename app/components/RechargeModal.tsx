@@ -25,6 +25,15 @@ function formatPhone(raw: string) {
   return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`
 }
 
+function formatCPF(raw: string) {
+  const digits = raw.replace(/\D/g, "").slice(0, 11)
+  if (digits.length <= 3) return digits
+  if (digits.length <= 6) return `${digits.slice(0, 3)}.${digits.slice(3)}`
+  if (digits.length <= 9)
+    return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6)}`
+  return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6, 9)}-${digits.slice(9)}`
+}
+
 function formatCurrency(value: number) {
   return value.toLocaleString("pt-BR", {
     style: "currency",
@@ -35,8 +44,11 @@ function formatCurrency(value: number) {
 export default function RechargeModal({ value, onClose }: RechargeModalProps) {
   const [step, setStep] = useState<Step>("phone")
   const [phone, setPhone] = useState("")
+  const [name, setName] = useState("")
+  const [cpf, setCpf] = useState("")
   const [loading, setLoading] = useState(false)
   const [pixData, setPixData] = useState<PixData | null>(null)
+  const [totalSeconds, setTotalSeconds] = useState<number>(600)
   const [copied, setCopied] = useState(false)
   const [timeLeft, setTimeLeft] = useState<number>(0)
   const [error, setError] = useState<string | null>(null)
@@ -44,7 +56,11 @@ export default function RechargeModal({ value, onClose }: RechargeModalProps) {
 
   const isOpen = value !== null
   const phoneDigits = phone.replace(/\D/g, "")
+  const cpfDigits = cpf.replace(/\D/g, "")
   const phoneValid = phoneDigits.length === 11 || phoneDigits.length === 10
+  const cpfValid = cpfDigits.length === 11
+  const nameValid = name.trim().length >= 3
+  const formValid = phoneValid && cpfValid && nameValid
 
   // Lock body scroll while open
   useEffect(() => {
@@ -86,11 +102,18 @@ export default function RechargeModal({ value, onClose }: RechargeModalProps) {
     return `${m}:${s}`
   }, [timeLeft])
 
+  const timerPercent = useMemo(() => {
+    if (!totalSeconds) return 0
+    return Math.max(0, Math.min(100, (timeLeft / totalSeconds) * 100))
+  }, [timeLeft, totalSeconds])
+
   if (!isOpen) return null
 
   const handleClose = () => {
     setStep("phone")
     setPhone("")
+    setName("")
+    setCpf("")
     setPixData(null)
     setCopied(false)
     setError(null)
@@ -98,22 +121,39 @@ export default function RechargeModal({ value, onClose }: RechargeModalProps) {
   }
 
   const handleContinue = async () => {
-    if (!phoneValid || value === null) return
+    if (!formValid || value === null) return
     setLoading(true)
     setError(null)
     try {
       const res = await fetch("/api/pix/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ value, phone: phoneDigits }),
+        body: JSON.stringify({
+          value,
+          phone: phoneDigits,
+          name: name.trim(),
+          cpf: cpfDigits,
+        }),
       })
-      if (!res.ok) throw new Error("Falha ao gerar PIX")
-      const data = (await res.json()) as PixData
-      setPixData(data)
+      const data = await res.json()
+      if (!res.ok) {
+        throw new Error(data?.error || "Falha ao gerar PIX")
+      }
+      const pix = data as PixData
+      const seconds = Math.max(
+        60,
+        Math.floor((new Date(pix.expiresAt).getTime() - Date.now()) / 1000),
+      )
+      setTotalSeconds(seconds)
+      setPixData(pix)
       setStep("payment")
     } catch (err) {
       console.log("[v0] Erro PIX:", err)
-      setError("Não foi possível gerar o PIX. Tente novamente.")
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Não foi possível gerar o PIX. Tente novamente.",
+      )
     } finally {
       setLoading(false)
     }
@@ -187,13 +227,45 @@ export default function RechargeModal({ value, onClose }: RechargeModalProps) {
                 className="recharge-field-input"
                 value={phone}
                 onChange={(e) => setPhone(formatPhone(e.target.value))}
+                placeholder="(00) 00000-0000"
+                maxLength={15}
+              />
+            </div>
+
+            <div className="recharge-field">
+              <label htmlFor="recharge-name" className="recharge-field-label">
+                Nome completo
+              </label>
+              <input
+                id="recharge-name"
+                type="text"
+                autoComplete="name"
+                className="recharge-field-input"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Como está no documento"
+                maxLength={80}
+              />
+            </div>
+
+            <div className="recharge-field">
+              <label htmlFor="recharge-cpf" className="recharge-field-label">
+                CPF
+              </label>
+              <input
+                id="recharge-cpf"
+                type="tel"
+                inputMode="numeric"
+                className="recharge-field-input"
+                value={cpf}
+                onChange={(e) => setCpf(formatCPF(e.target.value))}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter" && phoneValid && !loading) {
+                  if (e.key === "Enter" && formValid && !loading) {
                     handleContinue()
                   }
                 }}
-                placeholder="(00) 00000-0000"
-                maxLength={15}
+                placeholder="000.000.000-00"
+                maxLength={14}
               />
             </div>
 
@@ -202,7 +274,7 @@ export default function RechargeModal({ value, onClose }: RechargeModalProps) {
             <button
               type="button"
               className="recharge-continue-btn"
-              disabled={!phoneValid || loading}
+              disabled={!formValid || loading}
               onClick={handleContinue}
             >
               {loading ? "Gerando PIX..." : "Continuar"}
@@ -234,9 +306,7 @@ export default function RechargeModal({ value, onClose }: RechargeModalProps) {
             <div className="recharge-payment-timer-bar">
               <div
                 className="recharge-payment-timer-fill"
-                style={{
-                  width: `${Math.max(0, Math.min(100, (timeLeft / 600) * 100))}%`,
-                }}
+                style={{ width: `${timerPercent}%` }}
               />
             </div>
             <p className="recharge-payment-timer-label">
