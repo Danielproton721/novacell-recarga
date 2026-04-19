@@ -3,7 +3,7 @@ import { CalendarRange, Tv } from "lucide-react";
 export default function TvSection() {
   return (
     <section className="tv-section" id="tv">
-      <h2 className="tv-title">NovaCell TV Pré-pago</h2>
+      <h2 className="tv-title">Claro TV Pré-pago</h2>
       <p className="tv-subtitle">
         Programação do seu jeito, sem mensalidade e sem fidelidade.
       </p>
