@@ -81,7 +81,7 @@ a {
 }
 
 .header-inner {
-  padding: 12px 20px;
+  padding: 0 20px;
   display: flex;
   align-items: center;
   background: #D52B1E;
