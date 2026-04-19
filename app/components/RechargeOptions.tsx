@@ -1,64 +1,72 @@
-import { MessageCircle, Smartphone, Phone, Mail, Hash } from "lucide-react";
+import { Phone, Smartphone, MessageSquare, Hash } from "lucide-react";
 
 export default function RechargeOptions() {
   return (
     <section className="recharge-options" id="options">
-      <h3 className="recharge-options-title">RECARREGUE TAMBÉM</h3>
+      <h3 className="footer-heading">RECARREGUE TAMBÉM</h3>
       <div className="recharge-options-grid">
         <div className="recharge-option">
           <span className="recharge-option-icon" aria-hidden="true">
-            <MessageCircle size={22} strokeWidth={2} />
+            <Phone size={18} strokeWidth={2} />
           </span>
           <div>
             <strong>WhatsApp</strong>
-            <span>(11) 98765-4321</span>
+            <span>(11) 99991-0621</span>
           </div>
         </div>
         <div className="recharge-option">
           <span className="recharge-option-icon" aria-hidden="true">
-            <Smartphone size={22} strokeWidth={2} />
+            <Smartphone size={18} strokeWidth={2} />
           </span>
           <div>
-            <strong>Meu NovaCell</strong>
+            <strong>Minha Claro</strong>
           </div>
         </div>
         <div className="recharge-option">
           <span className="recharge-option-icon" aria-hidden="true">
-            <Phone size={22} strokeWidth={2} />
+            <Phone size={18} strokeWidth={2} />
           </span>
           <div>
-            <strong>Telefone *444</strong>
+            <strong>Telefone *555</strong>
           </div>
         </div>
         <div className="recharge-option">
           <span className="recharge-option-icon" aria-hidden="true">
-            <Mail size={22} strokeWidth={2} />
+            <MessageSquare size={18} strokeWidth={2} />
           </span>
           <div>
-            <strong>SMS *444</strong>
+            <strong>SMS *555</strong>
           </div>
         </div>
         <div className="recharge-option">
           <span className="recharge-option-icon" aria-hidden="true">
-            <Hash size={22} strokeWidth={2} />
+            <Hash size={18} strokeWidth={2} />
           </span>
           <div>
-            <strong>USSD *444#</strong>
+            <strong>USSD *555#</strong>
           </div>
         </div>
-        <div className="recharge-option">
-          <div className="recharge-option-pay">
-            <svg viewBox="0 0 32 32" width="18" height="18">
-              <circle cx="16" cy="16" r="14" fill="#E63312" />
+        <div className="recharge-option recharge-option--pay">
+          <span className="claro-pay-logo" aria-label="Claro Pay">
+            <span className="claro-pay-claro">claro</span>
+            <svg
+              viewBox="0 0 18 18"
+              width="12"
+              height="12"
+              fill="none"
+              aria-hidden="true"
+              className="claro-pay-tick"
+            >
               <path
-                d="M10 16 Q16 8 22 16 Q16 24 10 16Z"
-                fill="#fff"
-                opacity="0.9"
+                d="M2 9 L7 14 L16 3"
+                stroke="#D52B1E"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
-              <circle cx="16" cy="16" r="3" fill="#fff" />
             </svg>
-            <strong>pay</strong>
-          </div>
+            <span className="claro-pay-pay">pay</span>
+          </span>
         </div>
       </div>
     </section>

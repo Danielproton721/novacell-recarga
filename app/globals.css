@@ -740,6 +740,20 @@ a {
   color: var(--white);
 }
 
+.offer-card-image {
+  padding: 0;
+  min-height: auto;
+  overflow: hidden;
+  line-height: 0;
+  background: transparent;
+}
+
+.offer-card-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .offer-card-gradient {
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
   color: var(--white);
@@ -805,146 +819,183 @@ a {
   background: var(--orange-hover);
 }
 
-/* ============ APP SECTION ============ */
-.app-section {
-  padding: 32px 20px;
-  background: var(--black);
-  color: var(--white);
-}
-
-.app-section-title {
+/* ============ FOOTER HEADING (compartilhado) ============ */
+.footer-heading {
   font-size: 0.95rem;
   font-weight: 800;
-  letter-spacing: 0.02em;
-  margin-bottom: 16px;
+  letter-spacing: 0.04em;
+  color: #00B0F0;
+  margin: 0 0 16px;
+  text-transform: uppercase;
+}
+
+/* ============ APP SECTION ============ */
+.app-section {
+  padding: 28px 20px 24px;
+  background: var(--black);
+  color: var(--white);
 }
 
 .app-buttons {
   display: flex;
   gap: 12px;
+  flex-wrap: nowrap;
 }
 
 .store-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   padding: 10px 14px;
-  background: transparent;
-  border: 1.5px solid rgba(255,255,255,0.3);
-  border-radius: var(--radius-sm);
+  background: var(--black);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  border-radius: 8px;
   color: var(--white);
+  text-decoration: none;
   transition: border-color 200ms var(--ease-out), background 200ms var(--ease-out);
+  flex: 1 1 0;
+  min-width: 0;
+  white-space: nowrap;
 }
 
 .store-btn:hover {
-  border-color: rgba(255,255,255,0.6);
-  background: rgba(255,255,255,0.05);
+  border-color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .store-btn small {
   display: block;
-  font-size: 0.55rem;
-  opacity: 0.7;
+  font-size: 0.6rem;
+  opacity: 0.85;
   font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .store-btn strong {
   display: block;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   font-weight: 700;
+  letter-spacing: 0.01em;
 }
 
 /* ============ RECHARGE OPTIONS ============ */
 .recharge-options {
-  padding: 32px 20px;
+  padding: 24px 20px 28px;
   background: var(--black);
-  border-top: 1px solid rgba(255,255,255,0.08);
-}
-
-.recharge-options-title {
-  font-size: 0.95rem;
-  font-weight: 800;
-  color: var(--white);
-  letter-spacing: 0.02em;
-  margin-bottom: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  margin: 0;
 }
 
 .recharge-options-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px 16px;
 }
 
 .recharge-option {
   display: flex;
   align-items: center;
-  gap: 6px;
-  color: rgba(255,255,255,0.8);
-  font-size: 0.7rem;
+  gap: 10px;
+  color: var(--white);
+  font-size: 0.85rem;
 }
 
 .recharge-option strong {
   display: block;
-  font-size: 0.7rem;
+  font-size: 0.85rem;
+  font-weight: 600;
   color: var(--white);
+  line-height: 1.2;
 }
 
 .recharge-option span:not(.recharge-option-icon) {
-  font-size: 0.6rem;
-  opacity: 0.7;
+  display: block;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.2;
+  margin-top: 2px;
 }
 
 .recharge-option-icon {
   flex-shrink: 0;
-  width: 36px;
-  height: 36px;
+  width: 28px;
+  height: 28px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--radius-full);
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--white);
+  border-radius: 0;
+  background: transparent;
+  color: #D52B1E;
 }
 
 .recharge-option-icon svg {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
 }
 
-.recharge-option-pay {
-  display: flex;
+.recharge-option--pay {
   align-items: center;
-  gap: 4px;
-  color: var(--white);
-  font-size: 0.75rem;
+}
+
+.claro-pay-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
   font-weight: 700;
+  color: var(--white);
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.claro-pay-claro {
+  color: var(--white);
+}
+
+.claro-pay-tick {
+  display: inline-block;
+  flex-shrink: 0;
+  transform: translateY(-4px);
+  margin: 0 1px;
+}
+
+.claro-pay-pay {
+  color: rgba(255, 255, 255, 0.55);
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
 /* ============ FOOTER ============ */
 .footer {
-  padding: 24px 20px;
+  padding: 20px;
   background: var(--black);
-  border-top: 1px solid rgba(255,255,255,0.08);
 }
 
 .footer-links {
   display: flex;
-  justify-content: center;
-  gap: 24px;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding-top: 20px;
 }
 
 .footer-links a {
-  color: rgba(255,255,255,0.6);
-  font-size: 0.75rem;
+  color: var(--white);
+  font-size: 0.8rem;
   font-weight: 500;
   text-decoration: underline;
   text-underline-offset: 3px;
-  transition: color 200ms var(--ease-out);
+  line-height: 1.35;
+  transition: opacity 200ms var(--ease-out);
+  flex: 1;
+  text-align: left;
 }
 
 .footer-links a:hover {
-  color: var(--white);
+  opacity: 0.8;
 }
 
 /* ============ ANIMATIONS ============ */
