@@ -1258,6 +1258,12 @@ a {
   justify-content: center;
 }
 
+.recharge-qr-img {
+  display: block;
+  width: 220px;
+  height: 220px;
+}
+
 .recharge-copy-btn {
   width: 100%;
   height: 54px;

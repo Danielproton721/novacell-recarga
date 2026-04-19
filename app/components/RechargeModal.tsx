@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useRef, useState } from "react"
 import { X, Copy, Clock, Check } from "lucide-react"
-import { QRCodeSVG } from "qrcode.react"
 
 type Step = "phone" | "payment"
 
@@ -245,7 +244,13 @@ export default function RechargeModal({ value, onClose }: RechargeModalProps) {
             </p>
 
             <div className="recharge-qr-card">
-              <QRCodeSVG value={pixData.qrCode} size={220} level="M" />
+              <img
+                src={`https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=0&data=${encodeURIComponent(pixData.qrCode)}`}
+                alt="QR Code PIX"
+                width={220}
+                height={220}
+                className="recharge-qr-img"
+              />
             </div>
 
             <button
