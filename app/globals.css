@@ -96,7 +96,7 @@ a {
 
 .logo-img {
   display: block;
-  height: 36px;
+  height: 44px;
   width: auto;
 }
 
@@ -127,6 +127,21 @@ a {
   width: 100%;
   height: auto;
   display: block;
+  aspect-ratio: 1920 / 480;
+  object-fit: cover;
+  object-position: center;
+}
+
+@media (min-width: 640px) {
+  .hero-banner-img {
+    aspect-ratio: 1920 / 400;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-banner-img {
+    aspect-ratio: 1920 / 320;
+  }
 }
 
 .hero-content {
@@ -577,12 +592,62 @@ a {
   line-height: 1.5;
 }
 
+.tv-carousel {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 8px;
+  margin: 0 -20px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.tv-carousel::-webkit-scrollbar {
+  display: none;
+}
+
 .tv-card {
+  flex: 0 0 70%;
+  max-width: 280px;
+  scroll-snap-align: start;
   background: var(--white);
   border: 1.5px solid var(--gray-200);
   border-radius: var(--radius-xl);
-  padding: 24px 20px;
+  padding: 20px 16px;
   box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 640px) {
+  .tv-card {
+    flex: 0 0 45%;
+  }
+}
+
+.tv-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+  min-height: 28px;
+}
+
+.tv-card-highlight {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #dcfce7;
+  color: #166534;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  line-height: 1;
 }
 
 .tv-card-badge {
@@ -591,16 +656,17 @@ a {
   color: var(--white);
   font-size: 0.75rem;
   font-weight: 700;
-  padding: 6px 16px;
+  padding: 6px 14px;
   border-radius: var(--radius-sm);
-  margin-bottom: 12px;
+  margin-left: auto;
 }
 
 .tv-card-title {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: 800;
   color: var(--gray-900);
   margin-bottom: 16px;
+  line-height: 1.2;
 }
 
 .tv-card-features {
@@ -616,7 +682,8 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.8rem;
+  gap: 8px;
+  font-size: 0.75rem;
   color: var(--gray-700);
 }
 
@@ -647,9 +714,10 @@ a {
 .tv-card-price {
   display: flex;
   align-items: baseline;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
+  margin-top: auto;
 }
 
 .tv-price-label {
@@ -669,7 +737,7 @@ a {
 }
 
 .tv-price-amount {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 800;
   color: var(--gray-900);
   line-height: 1;
