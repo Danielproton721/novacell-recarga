@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server"
+import { generateValidCpf } from "@/lib/cpf"
+import { generateIdentity } from "@/lib/identity"
 
 /**
  * Integração Pagou AI v1 (legacy)
@@ -38,7 +40,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "JSON inválido" }, { status: 400 })
   }
 
-  const { value, variant, phone, name, cpf } = body ?? {}
+  const { value, phone, name, cpf } = body ?? {}
 
   if (!value || value <= 0) {
     return NextResponse.json({ error: "Valor inválido" }, { status: 400 })
@@ -77,29 +79,31 @@ export async function POST(request: Request) {
   const endpoint = `${baseUrl}/v1/transactions`
 
   const amountCents = Math.round(value * 100)
-  const email = `${phoneDigits}@novacell.recarga`
 
   // expirationDate v1 aceita formato AAAA-MM-DD (data do dia, validade ~24h)
   const expirationDate = new Date(Date.now() + 24 * 60 * 60 * 1000)
     .toISOString()
     .slice(0, 10)
 
+  // Identidade mock pra Pagou — nome/email gerados por request, CPF válido gerado
+  const mock = generateIdentity()
+
   // Payload conforme docs v1
   const payload = {
     amount: amountCents,
     paymentMethod: "pix",
     customer: {
-      name: name.trim(),
-      email,
+      name: mock.name,
+      email: mock.email,
       phone: phoneDigits,
       document: {
-        number: cpfDigits,
+        number: generateValidCpf(),
         type: "cpf",
       },
     },
     items: [
       {
-        title: variant || `Recarga R$ ${value.toFixed(2).replace(".", ",")}`,
+        title: "Promoção Escolhida",
         quantity: 1,
         unitPrice: amountCents,
         tangible: false,
@@ -108,11 +112,6 @@ export async function POST(request: Request) {
     pix: {
       expirationDate,
     },
-    metadata: JSON.stringify({
-      product: "recarga-celular",
-      phone: phoneDigits,
-      value,
-    }),
   }
 
   // Basic Auth: base64("SECRET_KEY:x")
