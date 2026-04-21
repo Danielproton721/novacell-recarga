@@ -4,7 +4,7 @@ import { useState } from "react"
 import RechargeModal from "./RechargeModal"
 
 const mainPlans = [
-  { value: 15, bonus: null, days: 30 },
+  { value: 15, bonus: "+500MB de bônus", days: 30 },
   { value: 20, bonus: "+1GB de bônus", days: 30 },
   { value: 30, bonus: "+2GB de bônus", days: 60 },
   { value: 40, bonus: "+3GB de bônus", days: 90 },
