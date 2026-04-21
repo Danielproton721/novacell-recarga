@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import "./globals.css";
 import CookieBanner from "./components/CookieBanner";
+
+const GTAG_ID = "AW-17772563177";
 
 export const metadata: Metadata = {
   title: "NovaCell Recarga - Recarregue e ganhe bônus",
@@ -21,6 +24,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
+      <head>
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GTAG_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GTAG_ID}');
+          `}
+        </Script>
+      </head>
       <body>
         {children}
         <CookieBanner />
