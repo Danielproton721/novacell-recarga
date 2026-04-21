@@ -4,36 +4,42 @@ import { useState } from "react"
 import RechargeModal from "./RechargeModal"
 
 const mainPlans = [
-  { value: 15, bonus: null, days: 30 },
-  { value: 20, bonus: "+1GB de bônus", days: 30 },
-  { value: 30, bonus: "+2GB de bônus", days: 60 },
-  { value: 40, bonus: "+3GB de bônus", days: 90 },
+  { value: 15, bonus: null, days: 30, featured: false },
+  { value: 20, bonus: "+1GB de bônus", days: 30, featured: false },
+  { value: 30, bonus: "+2GB de bônus", days: 60, featured: true },
+  { value: 40, bonus: "+3GB de bônus", days: 90, featured: false },
 ]
 
 const extraPlans = [
-  { value: 50, bonus: "+5GB de bônus", days: 120 },
-  { value: 75, bonus: "+7GB de bônus", days: 150 },
-  { value: 100, bonus: "+10GB de bônus", days: 180 },
+  { value: 50, bonus: "+5GB de bônus", days: 120, featured: false },
+  { value: 75, bonus: "+7GB de bônus", days: 150, featured: false },
+  { value: 100, bonus: "+10GB de bônus", days: 180, featured: false },
 ]
 
 function PlanCard({
   value,
   bonus,
   days,
+  featured,
   onSelect,
 }: {
   value: number
   bonus: string | null
   days: number
+  featured?: boolean
   onSelect: (value: number) => void
 }) {
   return (
-    <div className="plan-card" data-plan={value}>
+    <div
+      className={`plan-card${featured ? " plan-card--featured" : ""}`}
+      data-plan={value}
+    >
+      {featured && <span className="plan-badge">Mais escolhido</span>}
       <div className="plan-value">
         <span className="plan-currency">R$</span>
         <span className="plan-amount">{value}</span>
       </div>
-      {bonus && <span className="plan-bonus">{bonus}</span>}
+      <span className="plan-bonus">{bonus || " "}</span>
       <span className="plan-validity">Válido por {days} dias</span>
       <button
         className="plan-btn"
@@ -76,6 +82,7 @@ export default function Plans() {
             value={plan.value}
             bonus={plan.bonus}
             days={plan.days}
+            featured={plan.featured}
             onSelect={(v) => handleSelect(v, plan.bonus)}
           />
         ))}

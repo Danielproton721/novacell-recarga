@@ -84,7 +84,34 @@ a {
   padding: 0 20px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   background: #D52B1E;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.header-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  color: var(--white);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: background 180ms var(--ease-out);
+}
+
+.header-icon-btn:hover,
+.header-icon-btn:focus-visible {
+  background: rgba(255, 255, 255, 0.15);
+  outline: none;
 }
 
 .logo {
@@ -285,6 +312,7 @@ a {
 }
 
 .plan-card {
+  position: relative;
   background: var(--white);
   border: 1.5px solid var(--gray-200);
   border-radius: var(--radius-lg);
@@ -295,6 +323,27 @@ a {
   gap: 6px;
   transition: border-color 300ms var(--ease-out), box-shadow 300ms var(--ease-out);
   animation: fadeInUp 500ms var(--ease-smooth) both;
+}
+
+.plan-card--featured {
+  border-color: var(--orange-accent);
+  box-shadow: 0 6px 22px rgba(230, 51, 18, 0.14);
+}
+
+.plan-badge {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--orange-accent);
+  color: var(--gray-900);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+  text-transform: uppercase;
 }
 
 .plan-card:nth-child(1) { animation-delay: 0ms; }
@@ -331,6 +380,8 @@ a {
   font-size: 0.7rem;
   font-weight: 600;
   color: var(--red-primary);
+  min-height: 1em;
+  line-height: 1;
 }
 
 .plan-validity {
@@ -341,6 +392,7 @@ a {
 
 .plan-btn {
   width: 100%;
+  margin-top: auto;
   padding: 10px 16px;
   background: var(--orange-accent);
   color: var(--gray-900);
@@ -1467,4 +1519,89 @@ a {
   .recharge-modal--payment {
     padding: 44px 18px 28px;
   }
+}
+
+/* ============ COOKIE BANNER ============ */
+.cookie-banner {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  z-index: 200;
+}
+
+@media (min-width: 768px) {
+  .cookie-banner {
+    left: auto;
+    right: 24px;
+    bottom: 24px;
+    max-width: 420px;
+  }
+}
+
+.cookie-banner-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+.cookie-banner-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gray-900);
+  line-height: 1.35;
+}
+
+.cookie-banner-text {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--gray-700);
+  line-height: 1.5;
+}
+
+.cookie-banner-link {
+  color: var(--red-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.cookie-banner-link:hover {
+  text-decoration: underline;
+}
+
+.cookie-banner-actions {
+  margin-top: 14px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.cookie-banner-btn {
+  border: none;
+  cursor: pointer;
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  transition: background 180ms var(--ease-out), opacity 180ms var(--ease-out);
+}
+
+.cookie-banner-btn--ghost {
+  background: transparent;
+  color: var(--red-primary);
+  border: 1.5px solid var(--red-primary);
+}
+
+.cookie-banner-btn--ghost:hover {
+  background: rgba(213, 43, 30, 0.06);
+}
+
+.cookie-banner-btn--primary {
+  background: var(--red-primary);
+  color: var(--white);
+}
+
+.cookie-banner-btn--primary:hover {
+  opacity: 0.9;
 }
