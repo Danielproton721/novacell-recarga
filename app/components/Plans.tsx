@@ -45,7 +45,7 @@ function PlanCard({
         }
       }}
     >
-      {selected && <span className="plan-badge">Mais escolhido</span>}
+      {value === 30 && <span className="plan-badge">Mais escolhido</span>}
       <div className="plan-value">
         <span className="plan-currency">R$</span>
         <span className="plan-amount">{value}</span>
