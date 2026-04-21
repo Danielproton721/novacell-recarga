@@ -101,7 +101,7 @@ export async function POST(request: Request) {
     },
     items: [
       {
-        title: "Promoção Escolhida",
+        title: "Promoção escolhida 2",
         quantity: 1,
         unitPrice: amountCents,
         tangible: false,
