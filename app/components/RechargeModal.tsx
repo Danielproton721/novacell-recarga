@@ -26,15 +26,6 @@ function formatPhone(raw: string) {
   return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`
 }
 
-function formatCPF(raw: string) {
-  const digits = raw.replace(/\D/g, "").slice(0, 11)
-  if (digits.length <= 3) return digits
-  if (digits.length <= 6) return `${digits.slice(0, 3)}.${digits.slice(3)}`
-  if (digits.length <= 9)
-    return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6)}`
-  return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6, 9)}-${digits.slice(9)}`
-}
-
 function formatCurrency(value: number) {
   return value.toLocaleString("pt-BR", {
     style: "currency",
@@ -45,8 +36,6 @@ function formatCurrency(value: number) {
 export default function RechargeModal({ value, variant, onClose }: RechargeModalProps) {
   const [step, setStep] = useState<Step>("phone")
   const [phone, setPhone] = useState("")
-  const [name, setName] = useState("")
-  const [cpf, setCpf] = useState("")
   const [loading, setLoading] = useState(false)
   const [pixData, setPixData] = useState<PixData | null>(null)
   const [totalSeconds, setTotalSeconds] = useState<number>(600)
@@ -57,11 +46,8 @@ export default function RechargeModal({ value, variant, onClose }: RechargeModal
 
   const isOpen = value !== null
   const phoneDigits = phone.replace(/\D/g, "")
-  const cpfDigits = cpf.replace(/\D/g, "")
   const phoneValid = phoneDigits.length === 11 || phoneDigits.length === 10
-  const cpfValid = cpfDigits.length === 11
-  const nameValid = name.trim().length >= 3
-  const formValid = phoneValid && cpfValid && nameValid
+  const formValid = phoneValid
 
   // Lock body scroll while open
   useEffect(() => {
@@ -113,8 +99,6 @@ export default function RechargeModal({ value, variant, onClose }: RechargeModal
   const handleClose = () => {
     setStep("phone")
     setPhone("")
-    setName("")
-    setCpf("")
     setPixData(null)
     setCopied(false)
     setError(null)
@@ -133,8 +117,6 @@ export default function RechargeModal({ value, variant, onClose }: RechargeModal
           value,
           variant: variant || `Recarga R$ ${value},00`,
           phone: phoneDigits,
-          name: name.trim(),
-          cpf: cpfDigits,
         }),
       })
       const data = await res.json()
@@ -229,45 +211,13 @@ export default function RechargeModal({ value, variant, onClose }: RechargeModal
                 className="recharge-field-input"
                 value={phone}
                 onChange={(e) => setPhone(formatPhone(e.target.value))}
-                placeholder="(00) 00000-0000"
-                maxLength={15}
-              />
-            </div>
-
-            <div className="recharge-field">
-              <label htmlFor="recharge-name" className="recharge-field-label">
-                Nome completo
-              </label>
-              <input
-                id="recharge-name"
-                type="text"
-                autoComplete="name"
-                className="recharge-field-input"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Como está no documento"
-                maxLength={80}
-              />
-            </div>
-
-            <div className="recharge-field">
-              <label htmlFor="recharge-cpf" className="recharge-field-label">
-                CPF
-              </label>
-              <input
-                id="recharge-cpf"
-                type="tel"
-                inputMode="numeric"
-                className="recharge-field-input"
-                value={cpf}
-                onChange={(e) => setCpf(formatCPF(e.target.value))}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && formValid && !loading) {
                     handleContinue()
                   }
                 }}
-                placeholder="000.000.000-00"
-                maxLength={14}
+                placeholder="(00) 00000-0000"
+                maxLength={15}
               />
             </div>
 

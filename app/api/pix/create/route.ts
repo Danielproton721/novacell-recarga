@@ -12,7 +12,11 @@ import { generateIdentity } from "@/lib/identity"
  * Endpoint:    https://api.conta.pagou.ai/v1/transactions
  *
  * Body esperado do frontend:
- *   { value: number, phone: string, name: string, cpf: string }
+ *   { value: number, phone: string, variant?: string }
+ *
+ * Nome, email e CPF são gerados server-side (generateIdentity + generateValidCpf).
+ * A Pagou exige esses campos no payload, mas pra recarga pré-paga anônima
+ * a gente não coleta do comprador.
  *
  * Resposta retornada ao frontend:
  *   { txid, qrCode, qrCodeImage, expiresAt, amount, phone }
@@ -22,8 +26,6 @@ type CreatePixBody = {
   value: number
   variant?: string
   phone: string
-  name: string
-  cpf: string
 }
 
 const DEFAULT_BASE_URL = "https://api.conta.pagou.ai"
@@ -40,24 +42,20 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "JSON inválido" }, { status: 400 })
   }
 
-  const { value, phone, name, cpf } = body ?? {}
+  const { value, phone } = body ?? {}
 
   if (!value || value <= 0) {
     return NextResponse.json({ error: "Valor inválido" }, { status: 400 })
   }
-  if (!phone || !name || !cpf) {
+  if (!phone) {
     return NextResponse.json(
-      { error: "Nome, CPF e telefone são obrigatórios" },
+      { error: "Telefone é obrigatório" },
       { status: 400 },
     )
   }
 
-  const cpfDigits = onlyDigits(cpf)
   const phoneDigits = onlyDigits(phone)
 
-  if (cpfDigits.length !== 11) {
-    return NextResponse.json({ error: "CPF deve ter 11 dígitos" }, { status: 400 })
-  }
   if (phoneDigits.length < 10 || phoneDigits.length > 11) {
     return NextResponse.json(
       { error: "Telefone deve ter 10 ou 11 dígitos (com DDD)" },
