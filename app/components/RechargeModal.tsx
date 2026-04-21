@@ -66,6 +66,19 @@ export default function RechargeModal({ value, variant, onClose }: RechargeModal
     }
   }, [isOpen, step])
 
+  // Fire Google Ads conversion when PIX is generated
+  useEffect(() => {
+    if (step !== "payment" || !pixData) return
+    const w = window as unknown as { gtag?: (...args: unknown[]) => void }
+    if (typeof w.gtag !== "function") return
+    w.gtag("event", "conversion", {
+      send_to: "AW-17772563177/ZkIkCIDzutIbEOmVz5pC",
+      value: pixData.amount,
+      currency: "BRL",
+      transaction_id: pixData.txid || "",
+    })
+  }, [step, pixData])
+
   // Countdown for payment step
   useEffect(() => {
     if (step !== "payment" || !pixData) return
