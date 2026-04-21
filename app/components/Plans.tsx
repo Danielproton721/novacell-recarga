@@ -4,47 +4,61 @@ import { useState } from "react"
 import RechargeModal from "./RechargeModal"
 
 const mainPlans = [
-  { value: 15, bonus: null, days: 30, featured: false },
-  { value: 20, bonus: "+1GB de bônus", days: 30, featured: false },
-  { value: 30, bonus: "+2GB de bônus", days: 60, featured: true },
-  { value: 40, bonus: "+3GB de bônus", days: 90, featured: false },
+  { value: 15, bonus: null, days: 30 },
+  { value: 20, bonus: "+1GB de bônus", days: 30 },
+  { value: 30, bonus: "+2GB de bônus", days: 60 },
+  { value: 40, bonus: "+3GB de bônus", days: 90 },
 ]
 
 const extraPlans = [
-  { value: 50, bonus: "+5GB de bônus", days: 120, featured: false },
-  { value: 75, bonus: "+7GB de bônus", days: 150, featured: false },
-  { value: 100, bonus: "+10GB de bônus", days: 180, featured: false },
+  { value: 50, bonus: "+5GB de bônus", days: 120 },
+  { value: 75, bonus: "+7GB de bônus", days: 150 },
+  { value: 100, bonus: "+10GB de bônus", days: 180 },
 ]
+
+const DEFAULT_SELECTED = 30
 
 function PlanCard({
   value,
   bonus,
   days,
-  featured,
+  selected,
   onSelect,
 }: {
   value: number
   bonus: string | null
   days: number
-  featured?: boolean
+  selected: boolean
   onSelect: (value: number) => void
 }) {
   return (
     <div
-      className={`plan-card${featured ? " plan-card--featured" : ""}`}
+      className={`plan-card${selected ? " plan-card--featured" : ""}`}
       data-plan={value}
+      onClick={() => onSelect(value)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault()
+          onSelect(value)
+        }
+      }}
     >
-      {featured && <span className="plan-badge">Mais escolhido</span>}
+      {selected && <span className="plan-badge">Mais escolhido</span>}
       <div className="plan-value">
         <span className="plan-currency">R$</span>
         <span className="plan-amount">{value}</span>
       </div>
-      <span className="plan-bonus">{bonus || " "}</span>
+      <span className="plan-bonus">{bonus || " "}</span>
       <span className="plan-validity">Válido por {days} dias</span>
       <button
         className="plan-btn"
         aria-label={`Recarregar R$${value}`}
-        onClick={() => onSelect(value)}
+        onClick={(e) => {
+          e.stopPropagation()
+          onSelect(value)
+        }}
       >
         Recarregar
       </button>
@@ -54,12 +68,14 @@ function PlanCard({
 
 export default function Plans() {
   const [showExtra, setShowExtra] = useState(false)
-  const [selectedValue, setSelectedValue] = useState<number | null>(null)
-  const [selectedVariant, setSelectedVariant] = useState<string>("")
+  const [highlightedValue, setHighlightedValue] = useState<number>(DEFAULT_SELECTED)
+  const [modalValue, setModalValue] = useState<number | null>(null)
+  const [modalVariant, setModalVariant] = useState<string>("")
 
   const handleSelect = (value: number, bonus: string | null) => {
-    setSelectedValue(value)
-    setSelectedVariant(
+    setHighlightedValue(value)
+    setModalValue(value)
+    setModalVariant(
       bonus
         ? `Recarga R$ ${value},00 ${bonus}`
         : `Recarga R$ ${value},00`
@@ -82,7 +98,7 @@ export default function Plans() {
             value={plan.value}
             bonus={plan.bonus}
             days={plan.days}
-            featured={plan.featured}
+            selected={plan.value === highlightedValue}
             onSelect={(v) => handleSelect(v, plan.bonus)}
           />
         ))}
@@ -113,6 +129,7 @@ export default function Plans() {
               value={plan.value}
               bonus={plan.bonus}
               days={plan.days}
+              selected={plan.value === highlightedValue}
               onSelect={(v) => handleSelect(v, plan.bonus)}
             />
           ))}
@@ -120,9 +137,9 @@ export default function Plans() {
       )}
 
       <RechargeModal
-        value={selectedValue}
-        variant={selectedVariant}
-        onClose={() => setSelectedValue(null)}
+        value={modalValue}
+        variant={modalVariant}
+        onClose={() => setModalValue(null)}
       />
     </section>
   )
