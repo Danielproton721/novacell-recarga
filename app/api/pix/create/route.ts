@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { generateValidCpf } from "@/lib/cpf"
 import { generateIdentity } from "@/lib/identity"
+import { sendPixEmail } from "@/lib/email"
 
 /**
  * Integração Pagou AI v1 (legacy)
@@ -26,7 +27,10 @@ type CreatePixBody = {
   value: number
   variant?: string
   phone: string
+  email?: string
 }
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 const DEFAULT_BASE_URL = "https://api.conta.pagou.ai"
 
@@ -42,7 +46,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "JSON inválido" }, { status: 400 })
   }
 
-  const { value, phone } = body ?? {}
+  const { value, phone, email } = body ?? {}
 
   if (!value || value <= 0) {
     return NextResponse.json({ error: "Valor inválido" }, { status: 400 })
@@ -50,6 +54,13 @@ export async function POST(request: Request) {
   if (!phone) {
     return NextResponse.json(
       { error: "Telefone é obrigatório" },
+      { status: 400 },
+    )
+  }
+  const emailTrimmed = (email ?? "").trim()
+  if (!emailTrimmed || !EMAIL_RE.test(emailTrimmed)) {
+    return NextResponse.json(
+      { error: "Email inválido" },
       { status: 400 },
     )
   }
@@ -195,6 +206,20 @@ export async function POST(request: Request) {
     expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString()
   }
 
+  const emailResult = await sendPixEmail({
+    to: emailTrimmed,
+    amount: value,
+    phone: phoneDigits,
+    qrCode,
+    expiresAt,
+  })
+
+  if (!emailResult.ok) {
+    console.log("[v0] Resend falhou (PIX já foi criado, seguindo):", emailResult.error)
+  } else {
+    console.log("[v0] Resend ok, id:", emailResult.id)
+  }
+
   return NextResponse.json({
     txid: data?.id ?? data?.transactionId ?? null,
     qrCode,
@@ -202,5 +227,6 @@ export async function POST(request: Request) {
     expiresAt,
     amount: value,
     phone: phoneDigits,
+    emailSent: emailResult.ok,
   })
 }

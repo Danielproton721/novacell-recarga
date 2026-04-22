@@ -36,6 +36,7 @@ function formatCurrency(value: number) {
 export default function RechargeModal({ value, variant, onClose }: RechargeModalProps) {
   const [step, setStep] = useState<Step>("phone")
   const [phone, setPhone] = useState("")
+  const [email, setEmail] = useState("")
   const [loading, setLoading] = useState(false)
   const [pixData, setPixData] = useState<PixData | null>(null)
   const [totalSeconds, setTotalSeconds] = useState<number>(600)
@@ -47,7 +48,9 @@ export default function RechargeModal({ value, variant, onClose }: RechargeModal
   const isOpen = value !== null
   const phoneDigits = phone.replace(/\D/g, "")
   const phoneValid = phoneDigits.length === 11 || phoneDigits.length === 10
-  const formValid = phoneValid
+  const emailTrimmed = email.trim()
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailTrimmed)
+  const formValid = phoneValid && emailValid
 
   // Lock body scroll while open
   useEffect(() => {
@@ -112,6 +115,7 @@ export default function RechargeModal({ value, variant, onClose }: RechargeModal
   const handleClose = () => {
     setStep("phone")
     setPhone("")
+    setEmail("")
     setPixData(null)
     setCopied(false)
     setError(null)
@@ -130,6 +134,7 @@ export default function RechargeModal({ value, variant, onClose }: RechargeModal
           value,
           variant: variant || `Recarga R$ ${value},00`,
           phone: phoneDigits,
+          email: emailTrimmed,
         }),
       })
       const data = await res.json()
@@ -231,6 +236,27 @@ export default function RechargeModal({ value, variant, onClose }: RechargeModal
                 }}
                 placeholder="(00) 00000-0000"
                 maxLength={15}
+              />
+            </div>
+
+            <div className="recharge-field">
+              <label htmlFor="recharge-email" className="recharge-field-label">
+                Seu email para receber o PIX
+              </label>
+              <input
+                id="recharge-email"
+                type="email"
+                inputMode="email"
+                autoComplete="email"
+                className="recharge-field-input"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && formValid && !loading) {
+                    handleContinue()
+                  }
+                }}
+                placeholder="voce@email.com"
               />
             </div>
 
