@@ -72,8 +72,8 @@ function buildHtml({ amount, phone, qrCode }: Omit<SendPixEmailInput, "to" | "ex
           <table cellpadding="0" cellspacing="0" style="margin:0 auto;">
             <tr>
               <td style="padding-right:10px;vertical-align:middle;">
-                <div style="width:30px;height:30px;background:#ffffff;border-radius:8px;text-align:center;line-height:30px;">
-                  <span style="color:#da291c;font-size:15px;font-weight:700;">P</span>
+                <div style="background:#ffffff;border-radius:8px;padding:6px 10px;display:inline-block;line-height:0;">
+                  <img src="${logoUrl}" alt="Claro" height="18" style="display:block;height:18px;width:auto;" />
                 </div>
               </td>
               <td style="vertical-align:middle;">
